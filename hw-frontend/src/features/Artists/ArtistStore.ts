@@ -7,7 +7,7 @@ interface ArtistsState {
     item: Artist | null;
     fetchLoading: boolean;
     createLoading: boolean;
-    fetchAllArtists: (album_id?: string) => Promise<void>;
+    fetchAllArtists: (artists?: string) => Promise<void>;
     fetchArtistById: (artist_id: string) => Promise<void>;
 }
 
@@ -17,28 +17,29 @@ export const useArtistStore = create<ArtistsState>((set) => ({
     item: null,
     fetchLoading: false,
     createLoading: false,
-    fetchAllArtists: async (album_id) => {
+    fetchAllArtists: async (search) => {
         set({fetchLoading: true});
-
         try {
-            const response = await axiosAPI.get<Artist[]>(album_id ? '/artists' + album_id : '/artists');
+            const url = search ? `/artists${search}` : '/artists';
+            console.log("Fetching from URL:", url);
+            const response = await axiosAPI.get<Artist[]>(url);
+            console.log("Response data:", response.data);
             set({items: response.data || []});
         } catch (e) {
-            console.error(e);
+            console.error("Fetch artists error:", e);
         } finally {
             set({fetchLoading: false});
         }
     },
-    fetchArtistById: async (artist_id: string) => {
+    fetchArtistById: async (artist_id) => {
         set({fetchLoading: true});
-
         try {
-            const response = await axiosAPI.get<Artist | null>('/artists/' + artist_id);
-            set({item: response.data || null});
+            const response = await axiosAPI.get<Artist>(`/artists/${artist_id}`);
+            set({item: response.data});
         } catch (e) {
-            console.error(e);
+            console.error("Fetch artist error:", e);
         } finally {
             set({fetchLoading: false});
         }
-    }
-}))
+    },
+}));
