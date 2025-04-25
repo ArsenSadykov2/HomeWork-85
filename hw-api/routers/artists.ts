@@ -8,15 +8,8 @@ const artistRouter = express.Router();
 
 artistRouter.get('/', async (req, res, next) => {
     try {
-        const testArtist = await Artist.create({
-            name: req.body.name,
-            image: req.body.image,
-            description: req.body.description,
-        });
-        const artists = await Artist.find({testArtist});
-        res.send({
-            artists
-        });
+        const artists = await Artist.find();
+        res.send({ artists });
     } catch (e) {
         next(e);
     }
