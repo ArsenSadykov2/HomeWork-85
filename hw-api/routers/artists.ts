@@ -9,7 +9,7 @@ const artistRouter = express.Router();
 artistRouter.get('/', async (req, res, next) => {
     try {
         const artists = await Artist.find();
-        res.send({ artists });
+        res.send(artists);
     } catch (e) {
         next(e);
     }
