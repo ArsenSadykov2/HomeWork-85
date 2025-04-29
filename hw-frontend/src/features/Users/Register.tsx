@@ -99,7 +99,12 @@ const Register = () => {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
+                    sx={{
+                        mt: 3,
+                        mb: 2,
+                        backgroundColor: '#a8e6cf',
+                        color: '#2d3436'
+                    }}
                 >
                     Sign Up
                 </Button>
