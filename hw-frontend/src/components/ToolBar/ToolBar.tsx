@@ -1,4 +1,4 @@
-import {AppBar, Container, styled, Toolbar, Typography} from "@mui/material";
+import {AppBar, Container, styled, Toolbar, Typography, Button} from "@mui/material";
 import {NavLink} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 
@@ -23,6 +23,7 @@ const AppToolbar = () => {
                         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                             <Link to="/">My PLaylist</Link>
                         </Typography>
+                        <Button component={NavLink} to='/register' color="inherit">Sing Up</Button>
                     </Grid>
                 </Container>
             </Toolbar>
