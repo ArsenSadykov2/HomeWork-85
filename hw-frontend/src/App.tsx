@@ -5,6 +5,7 @@ import ToolBar from "./components/ToolBar/ToolBar.tsx";
 import Artist from "./features/Artists/Artists.tsx";
 import FullArtist from "./features/Artists/FullArtist.tsx";
 import Register from "./features/Users/Register.tsx";
+import Login from "./features/Users/Login.tsx";
 
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
                     <Routes>
                         <Route path="/" element={<Artist/>}/>
                         <Route path="/register" element={<Register/>}/>
+                        <Route path="/login" element={<Login/>}/>
                         <Route path="/artist/:id" element={<FullArtist/>}/>
                         <Route path="*" element={<Typography variant="h4">Not found page</Typography>}/>
                     </Routes>

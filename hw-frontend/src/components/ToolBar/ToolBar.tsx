@@ -1,6 +1,8 @@
 import {AppBar, Container, styled, Toolbar, Typography, Button} from "@mui/material";
 import {NavLink} from "react-router-dom";
 import Grid from "@mui/material/Grid";
+import {useAppSelector} from "../../app/hooks.ts";
+import {selectUser} from "../../features/Users/userSlice.ts";
 
 const Link = styled(NavLink)({
     color: 'inherit',
@@ -11,6 +13,8 @@ const Link = styled(NavLink)({
 });
 
 const AppToolbar = () => {
+    const user = useAppSelector(selectUser);
+
     return (
         <AppBar position="sticky" sx={{
             mb: 2,
@@ -23,7 +27,14 @@ const AppToolbar = () => {
                         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                             <Link to="/">My PLaylist</Link>
                         </Typography>
-                        <Button component={NavLink} to='/register' color="inherit">Sing Up</Button>
+                        {user ?
+                            (<span>User Menu</span>)
+                            :
+                            (<>
+                                <Button component={NavLink} to='/register' color="inherit">Sing Up</Button>
+                                <Button component={NavLink} to='/login' color="inherit">Sing In</Button>
+                            </>)
+                        }
                     </Grid>
                 </Container>
             </Toolbar>
