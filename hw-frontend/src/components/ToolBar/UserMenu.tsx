@@ -32,7 +32,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
                 onClose={handleClose}
             >
                 <MenuItem>
-                    <Button component={NavLink} to='/' onClick={handleClose}>List Of history Tracks</Button>
+                    <Button component={NavLink} to='/trackHistories' onClick={handleClose}>List Of history Tracks</Button>
                 </MenuItem>
                 <MenuItem>My Account</MenuItem>
             </Menu>

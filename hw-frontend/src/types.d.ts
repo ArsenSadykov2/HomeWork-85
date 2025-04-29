@@ -12,6 +12,13 @@ export interface Album {
     date: number;
     image?: string;
 }
+
+export interface TrackHistory {
+    _id: string;
+    user: string;
+    track: string;
+    date: number;
+}
 export interface RegisterMutation {
     username: string;
     password: string;

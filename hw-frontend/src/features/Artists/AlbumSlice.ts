@@ -1,12 +1,12 @@
-import {Album, Artist} from "../../types";
+import {Artist} from "../../types";
 import {createSlice} from "@reduxjs/toolkit";
 import {RootState} from "../../app/store.ts";
 import {fetchAllArtists, fetchArtistById} from "./AlbumThunks.ts";
 
 
 interface ArtistState {
-    items: Album[];
-    item: Album | null;
+    items: Artist[];
+    item: Artist | null;
     fetchLoading: boolean;
     createLoading: boolean;
 }
