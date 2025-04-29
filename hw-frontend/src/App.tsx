@@ -2,8 +2,8 @@ import {Container, CssBaseline, Typography} from "@mui/material";
 import {Route, Routes} from "react-router-dom";
 import {ToastContainer} from "react-toastify";
 import ToolBar from "./components/ToolBar/ToolBar.tsx";
-import Artist from "./features/Artists/Artists.tsx";
-import FullArtist from "./features/Artists/FullArtist.tsx";
+import Artist from "./features/Artists/Albums.tsx";
+import FullAlbum from "./features/Artists/FullAlbum.tsx";
 import Register from "./features/Users/Register.tsx";
 import Login from "./features/Users/Login.tsx";
 
@@ -23,7 +23,7 @@ const App = () => {
                         <Route path="/" element={<Artist/>}/>
                         <Route path="/register" element={<Register/>}/>
                         <Route path="/login" element={<Login/>}/>
-                        <Route path="/artist/:id" element={<FullArtist/>}/>
+                        <Route path="/albums/:id" element={<FullAlbum/>}/>
                         <Route path="*" element={<Typography variant="h4">Not found page</Typography>}/>
                     </Routes>
                 </Container>

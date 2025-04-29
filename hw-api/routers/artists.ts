@@ -20,7 +20,7 @@ artistRouter.post('/', imagesUpload.single('image'), async (req, res, next) => {
         const name = req.body.name;
         const description = req.body.description;
 
-        const newArtist = new Artist({name, description, image: req.file ? 'images/' + req.file.filename : null });
+        const newArtist = new Artist({name, description, image: req.file ? 'fixtures/' + req.file.filename : null });
 
         await newArtist.save();
         res.send(newArtist);

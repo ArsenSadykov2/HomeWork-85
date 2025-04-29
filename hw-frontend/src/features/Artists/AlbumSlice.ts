@@ -1,12 +1,12 @@
-import {Artist} from "../../types";
+import {Album, Artist} from "../../types";
 import {createSlice} from "@reduxjs/toolkit";
 import {RootState} from "../../app/store.ts";
-import {fetchAllArtists, fetchArtistById} from "./ArtistThunks.ts";
+import {fetchAllArtists, fetchArtistById} from "./AlbumThunks.ts";
 
 
 interface ArtistState {
-    items: Artist[];
-    item: Artist | null;
+    items: Album[];
+    item: Album | null;
     fetchLoading: boolean;
     createLoading: boolean;
 }
@@ -18,7 +18,7 @@ const initialState: ArtistState = {
     createLoading: false,
 };
 
-export const artistSlice = createSlice({
+export const albumSlice = createSlice({
     name: 'artists',
     initialState,
     reducers: {},
@@ -42,7 +42,7 @@ export const artistSlice = createSlice({
     }
 });
 
-export const artistsReducer = artistSlice.reducer;
+export const artistsReducer = albumSlice.reducer;
 
 export const selectArtists = (state: RootState) => state.artists.items;
 export const selectOneArtist = (state: RootState) => state.artists.item;

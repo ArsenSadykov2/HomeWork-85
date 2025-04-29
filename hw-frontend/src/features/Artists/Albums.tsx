@@ -2,17 +2,17 @@ import Grid from "@mui/material/Grid";
 import { Button, Typography } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { useArtistStore } from "./ArtistStore.ts";
+import {useALbumsStore,} from "./AlbumStore.ts";
 import Spinner from "../../components/Spinner/Spinner.tsx";
-import ArtistItem from "./ArtistItem.tsx";
+import AlbumItem from "./AlbumItem.tsx";
 
 const Artist = () => {
-    const { items, fetchLoading, fetchAllArtists } = useArtistStore();
+    const { items, fetchLoading, fetchAllAlbums } = useALbumsStore();
     const { search } = useLocation();
 
     useEffect(() => {
-        void fetchAllArtists(search);
-    }, [fetchAllArtists, search]);
+        void fetchAllAlbums(search);
+    }, [fetchAllAlbums, search]);
 
     return (
         <Grid container direction="column" spacing={2}>
@@ -54,8 +54,8 @@ const Artist = () => {
                             <Typography variant="h4">No artists yet</Typography>
                         ) : (
                             <Grid container spacing={2}>
-                                {items.map((artist) => (
-                                    <ArtistItem
+                                {items.map(artist => (
+                                    <AlbumItem
                                         key={artist._id}
                                         name={artist.name}
                                         description={artist.description}

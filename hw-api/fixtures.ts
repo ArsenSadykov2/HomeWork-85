@@ -40,28 +40,28 @@ const run = async () => {
             artist: "Ed Sheeran",
             title: "1231231",
             date: Date,
-            image: 'fixtures/iseefire.jpg'
+            image: 'fixtures/test.jpeg'
 
         },
         {
             artist: "Ed Sheeran",
             title: "1231231",
             date: Date,
-            image: 'fixtures/iseefire.jpg'
+            image: 'fixtures/test.jpeg'
 
         },
         {
             artist: "Ed Sheeran",
             title: "1231231",
             date: Date,
-            image: 'fixtures/iseefire.jpg'
+            image: 'fixtures/test.jpeg'
 
         },
         {
             artist: "Ed Sheeran",
             title: "1231231",
             date: Date,
-            image: 'fixtures/iseefire.jpg'
+            image: 'fixtures/test.jpeg'
 
         }
     )
@@ -207,12 +207,12 @@ const run = async () => {
     await Artist.create([
         {
             name: "Ed Sheeran",
-            image: 'fixtures/iseefire.jpg',
+            image: 'fixtures/test.jpeg',
             description: "British singer-songwriter"
         },
         {
             name: "Taylor Swift",
-            image: 'fixtures/iseefire.jpg',
+            image: 'fixtures/test.jpeg',
             description: "American pop star"
         }
     ]);

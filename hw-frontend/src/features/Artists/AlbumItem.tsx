@@ -13,7 +13,7 @@ interface Props {
     image: string | undefined;
 }
 
-const ArtistItem: React.FC<Props> = ({name, description,  id, image}) => {
+const AlbumItem: React.FC<Props> = ({name, description,  id, image}) => {
     let cartImage = notFoundPic;
 
     if (image) {
@@ -38,7 +38,7 @@ const ArtistItem: React.FC<Props> = ({name, description,  id, image}) => {
                     </p>
                 </CardContent>
                 <CardActions>
-                    <IconButton component={Link} to={'/artists/' + id}>
+                    <IconButton component={Link} to={'/albums/' + id}>
                         <ArrowForwardIcon/>
                     </IconButton>
                 </CardActions>
@@ -47,4 +47,4 @@ const ArtistItem: React.FC<Props> = ({name, description,  id, image}) => {
     );
 };
 
-export default ArtistItem;
+export default AlbumItem;

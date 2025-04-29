@@ -6,11 +6,11 @@ import notFoundPic from "../../assets/images/notFoundPic.jpg";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Spinner from "../../components/Spinner/Spinner.tsx";
 import {apiUrl} from "../../globalConstants.ts";
-import {selectArtistsLoading, selectOneArtist} from "./ArtistSlice.ts";
-import {fetchArtistById} from "./ArtistThunks.ts";
+import {selectArtistsLoading, selectOneArtist} from "./AlbumSlice.ts";
+import {fetchArtistById} from "./AlbumThunks.ts";
 
 
-const FullArtist = () => {
+const FullAlbum = () => {
     const dispatch = useAppDispatch();
     const artist = useAppSelector(selectOneArtist);
     const fetchLoading = useAppSelector(selectArtistsLoading);
@@ -59,4 +59,4 @@ const FullArtist = () => {
     );
 };
 
-export default FullArtist;
+export default FullAlbum;
