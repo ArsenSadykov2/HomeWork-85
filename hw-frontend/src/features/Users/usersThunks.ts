@@ -47,3 +47,13 @@ export const login = createAsyncThunk<
         }
     }
 )
+
+export const logout = createAsyncThunk<
+    void,
+    void
+>(
+    'users/logout',
+    async () => {
+        await axiosApi.delete('users/sessions');
+    }
+)
