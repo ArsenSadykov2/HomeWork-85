@@ -9,8 +9,9 @@ export interface Album {
     _id: string;
     artist: string;
     title: string;
-    date: number;
+    date: string;
     image?: string;
+    isPublished: boolean;
 }
 
 export interface TrackHistory {

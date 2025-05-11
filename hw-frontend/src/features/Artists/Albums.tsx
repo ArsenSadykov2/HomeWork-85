@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import {useALbumsStore,} from "./AlbumStore.ts";
 import Spinner from "../../components/Spinner/Spinner.tsx";
 import AlbumItem from "./AlbumItem.tsx";
+import axiosAPI from "../../axiosApi.ts";
 
 const Artist = () => {
     const { items, fetchLoading, fetchAllAlbums } = useALbumsStore();
@@ -13,6 +14,15 @@ const Artist = () => {
     useEffect(() => {
         void fetchAllAlbums(search);
     }, [fetchAllAlbums, search]);
+
+    const handleStatusChange = async (id: string, newStatus: boolean) => {
+        try {
+            await axiosAPI.patch(`/albums/admin/${id}`, { isPublished: newStatus });
+            await fetchAllAlbums(search);
+        } catch (error) {
+            console.error("Failed to update album status:", error);
+        }
+    };
 
     return (
         <Grid container direction="column" spacing={2}>
@@ -34,14 +44,14 @@ const Artist = () => {
                                         Все
                                     </Button>
                                 </li>
-                                {items.map((artist) => (
-                                    <li key={artist._id}>
+                                {items.map((album) => (
+                                    <li key={album._id}>
                                         <Button
                                             variant="text"
                                             component={Link}
-                                            to={`?artist=${artist._id}`}
+                                            to={`?artist=${album._id}`}
                                         >
-                                            {artist.name}
+                                            {album.title}
                                         </Button>
                                     </li>
                                 ))}
@@ -57,10 +67,12 @@ const Artist = () => {
                                 {items.map(artist => (
                                     <AlbumItem
                                         key={artist._id}
-                                        name={artist.name}
-                                        description={artist.description}
+                                        title={artist.title}
+                                        date={artist.date}
                                         id={artist._id}
                                         image={artist.image || undefined}
+                                        isPublished={artist.isPublished}
+                                        onStatusChange={handleStatusChange}
                                     />
                                 ))}
                             </Grid>

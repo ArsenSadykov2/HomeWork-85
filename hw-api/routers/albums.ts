@@ -16,30 +16,6 @@ albumRouter.get('/', async (req, res, next) => {
     }
 });
 
-albumRouter.post('/', imagesUpload.single('image'), async (req, res, next) => {
-    try {
-        const artist = req.body.artist;
-        const title = req.body.title;
-        const date = req.body.date;
-
-        const artistId = await Artist.findById(artist);
-        if(!artistId) {
-            res.status(404).send("There is no album in list");
-            return;
-        }
-
-        const newAlbum = new Album({artist, title, date, image: req.file ? 'fixtures/' + req.file.filename : null});
-        await newAlbum.save();
-        res.send(newAlbum);
-    } catch (error) {
-        if (error instanceof Error.ValidationError  || error instanceof Error.CastError) {
-            res.status(400).send(error);
-            return;
-        }
-
-        next(error);
-    }
-});
 
 albumRouter.get('/:id', async (req, res, next) => {
     const id = req.params.id;

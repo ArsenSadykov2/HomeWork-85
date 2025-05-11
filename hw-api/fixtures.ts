@@ -26,12 +26,14 @@ const run = async () => {
         {
             username: "John",
             password: '123456',
-            token: crypto.randomUUID()
+            token: crypto.randomUUID(),
+            role: "user"
         },
         {
             username: "Selena",
             password: '123456',
-            token: crypto.randomUUID()
+            token: crypto.randomUUID(),
+            role: "admin"
         }
     )
 

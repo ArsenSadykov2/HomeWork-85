@@ -11,12 +11,16 @@ const AlbumSchema = new mongoose.Schema({
         required: true,
     },
     date: {
-        type: Number,
+        type: String,
         required: true,
     },
     image: {
         type: String,
         default: null,
+    },
+    isPublished: {
+        type: Boolean,
+        default: false
     }
 });
 
