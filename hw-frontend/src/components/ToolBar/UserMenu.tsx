@@ -6,7 +6,7 @@ import {toast} from "react-toastify";
 import {User} from "../../types";
 import {useAppDispatch} from "../../app/hooks.ts";
 import {logout} from "../../features/Users/usersThunks.ts";
-import {unsetUser} from "../../features/Users/userSlice.ts";
+import { unsetUser} from "../../features/Users/userSlice.ts";
 
 interface Props {
     user: User;
@@ -67,23 +67,25 @@ const UserMenu: React.FC<Props> = ({user}) => {
                 }}
             >
                 <MenuItem>
-                    <Button
-                        component={NavLink}
-                        to="/posts/new"
-                        onClick={handleClose}
-                        sx={{
-                            width: '100%',
-                            textTransform: 'none',
-                            color: '#1b5e20',
-                            fontWeight: 'bold',
-                            transition: 'box-shadow 0.3s',
-                            '&:hover': {
-                                boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
-                            },
-                        }}
-                    >
-                        Add product
-                    </Button>
+                    {user.role === 'admin' && (
+                        <Button
+                            component={NavLink}
+                            to="/albums/new"
+                            onClick={handleClose}
+                            sx={{
+                                width: '100%',
+                                textTransform: 'none',
+                                color: '#1b5e20',
+                                fontWeight: 'bold',
+                                transition: 'box-shadow 0.3s',
+                                '&:hover': {
+                                    boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
+                                },
+                            }}
+                        >
+                            Add product
+                        </Button>
+                    )}
                 </MenuItem>
 
                 <MenuItem

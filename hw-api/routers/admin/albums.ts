@@ -54,14 +54,15 @@ albumAdminRouter.post('/', imagesUpload.single('image'), async (req, res, next) 
         const artist = req.body.artist;
         const title = req.body.title;
         const date = req.body.date;
+        const isPublished = req.body.isPublished;
 
         const artistId = await Artist.findById(artist);
         if(!artistId) {
-            res.status(404).send("There is no album in list");
+            res.status(404).send("There is no artist in list");
             return;
         }
 
-        const newAlbum = new Album({artist, title, date, image: req.file ? 'fixtures/' + req.file.filename : null});
+        const newAlbum = new Album({artist, title, date, isPublished, image: req.file ? 'fixtures/' + req.file.filename : null});
         await newAlbum.save();
         res.send(newAlbum);
     } catch (error) {

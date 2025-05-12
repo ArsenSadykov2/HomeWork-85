@@ -6,9 +6,12 @@ import {useALbumsStore,} from "./AlbumStore.ts";
 import Spinner from "../../components/Spinner/Spinner.tsx";
 import AlbumItem from "./AlbumItem.tsx";
 import axiosAPI from "../../axiosApi.ts";
+import {useAppSelector} from "../../app/hooks.ts";
+import {selectUser} from "../Users/userSlice.ts";
 
-const Artist = () => {
+const Albums = () => {
     const { items, fetchLoading, fetchAllAlbums } = useALbumsStore();
+    const user = useAppSelector(selectUser);
     const { search } = useLocation();
 
     useEffect(() => {
@@ -73,6 +76,7 @@ const Artist = () => {
                                         image={artist.image || undefined}
                                         isPublished={artist.isPublished}
                                         onStatusChange={handleStatusChange}
+                                        userRole={user?.role}
                                     />
                                 ))}
                             </Grid>
@@ -84,4 +88,4 @@ const Artist = () => {
     );
 };
 
-export default Artist;
+export default Albums;

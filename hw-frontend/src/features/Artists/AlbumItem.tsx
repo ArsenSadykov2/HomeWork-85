@@ -15,9 +15,10 @@ interface Props {
     image: string | undefined;
     isPublished: boolean;
     onStatusChange?: (id: string, newStatus: boolean) => void;
+    userRole?: string;
 }
 
-const AlbumItem: React.FC<Props> = ({title, date,  id, image, isPublished, onStatusChange}) => {
+const AlbumItem: React.FC<Props> = ({title, date,  id, image, isPublished, onStatusChange, userRole}) => {
 
     const [currentPublishedStatus, setCurrentPublishedStatus] = useState(isPublished);
     const [isLoading, setIsLoading] = useState(false);
@@ -79,16 +80,18 @@ const AlbumItem: React.FC<Props> = ({title, date,  id, image, isPublished, onSta
                     <IconButton component={Link} to={'/albums/' + id}>
                         <ArrowForwardIcon/>
                     </IconButton>
-                    <Button
-                        onClick={handleTogglePublish}
-                        disabled={isLoading}
-                        variant="outlined"
-                        size="small"
-                        color={currentPublishedStatus ? "success" : "error"}
-                        sx={{ mr: 1 }}
-                    >
-                        {isLoading ? "Processing..." : "Toggle Status"}
-                    </Button>
+                    {userRole === 'admin' && (
+                        <Button
+                            onClick={handleTogglePublish}
+                            disabled={isLoading}
+                            variant="outlined"
+                            size="small"
+                            color={currentPublishedStatus ? "success" : "error"}
+                            sx={{ mr: 1 }}
+                        >
+                            {isLoading ? "Processing..." : "Toggle Status"}
+                        </Button>
+                    )}
                 </CardActions>
             </Card>
         </Grid>

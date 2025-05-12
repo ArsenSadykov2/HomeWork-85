@@ -14,6 +14,14 @@ export interface Album {
     isPublished: boolean;
 }
 
+export interface AlbumMutation {
+    artist: string;
+    title: string;
+    date: string;
+    image?: File | null;
+    isPublished?: boolean;
+}
+
 export interface TrackHistory {
     _id: string;
     user: string;
@@ -29,6 +37,7 @@ export interface User {
     _id: string;
     username: string;
     token: string;
+    role: string;
 }
 
 export interface ValidationError {
