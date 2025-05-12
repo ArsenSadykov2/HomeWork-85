@@ -12,9 +12,7 @@ import {useAppSelector} from "./app/hooks.ts";
 import {selectUser} from "./features/Users/userSlice.ts";
 import NewAlbum from "./features/Artists/NewAlbum.tsx";
 
-
 const App = () => {
-
     const user = useAppSelector(selectUser);
 
     return (
@@ -31,13 +29,11 @@ const App = () => {
                         <Route path="/register" element={<Register/>}/>
                         <Route path="/login" element={<Login/>}/>
 
-                        <Route path='admin' element={
-                            <ProtectedRoute isAllowed={user && user.role === 'admin'}>
-                                <Route path='/albums/new' element={<NewAlbum/>}/>
-                                <Route path="/albums/:id" element={<FullAlbum/>}/>
-                            </ProtectedRoute>
-                        }>
+                        <Route element={<ProtectedRoute isAllowed={user && user.role === 'admin'}/>}>
+                            <Route path="/albums/new" element={<NewAlbum/>}/>
+                            <Route path="/albums/:id" element={<FullAlbum/>}/>
                         </Route>
+
                         <Route path="/trackHistories" element={<TrackHistoryList/>}/>
                         <Route path="*" element={<Typography variant="h4">Not found page</Typography>}/>
                     </Routes>
@@ -47,4 +43,4 @@ const App = () => {
     )
 };
 
-export default App
+export default App;
