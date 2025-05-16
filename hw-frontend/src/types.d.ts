@@ -31,6 +31,13 @@ export interface TrackHistory {
 export interface RegisterMutation {
     username: string;
     password: string;
+    displayName: string;
+    avatar?: File | null;
+}
+
+export interface RegisterResponse {
+    user: User;
+    message: string;
 }
 
 export interface User {

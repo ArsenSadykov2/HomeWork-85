@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useRef, useState} from "react";
 import {Link as RouterLink, useNavigate} from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -21,6 +21,8 @@ const Register = () => {
     const [form, setForm] = useState<RegisterMutation>({
         username: '',
         password: '',
+        displayName: '',
+        avatar: null,
     });
 
 
@@ -32,20 +34,46 @@ const Register = () => {
         }
     };
 
+    const inputRef = useRef<HTMLInputElement>(null);
+
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
         setForm({ ...form, [name]: value });
     };
 
+    const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setForm(prev => ({
+                ...prev,
+                avatar: e.target.files![0]
+            }));
+        }
+    };
+
     const onSubmitFormHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (!form.displayName) {
+            alert('Display Name is required!');
+            return;
+        }
+
         try {
-            await dispatch(register(form)).unwrap();
+            const formData = new FormData();
+            formData.append('username', form.username);
+            formData.append('password', form.password);
+            formData.append('displayName', form.displayName);
+            if (form.avatar) {
+                formData.append('avatar', form.avatar);
+            }
+
+            await dispatch(register(formData)).unwrap();
             navigate("/");
-        } catch(error) {
+        } catch (error) {
             console.error(error);
         }
     };
+
 
     return (
         <Box
@@ -64,6 +92,20 @@ const Register = () => {
             </Typography>
             <Box component="form" noValidate onSubmit={onSubmitFormHandler} sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
+                    <Grid size={{xs: 12}}>
+                        <TextField
+                            required
+                            disabled={registerLoading}
+                            fullWidth
+                            id="displayName"
+                            label="Display Name"
+                            name="displayName"
+                            value={form.displayName}
+                            onChange={onInputChange}
+                            error={Boolean(getFieldError('displayName'))}
+                            helperText={getFieldError('displayName')}
+                        />
+                    </Grid>
                     <Grid  size={{xs: 12}}>
                         <TextField
                             disabled={registerLoading}
@@ -92,6 +134,28 @@ const Register = () => {
                             helperText={getFieldError('password')}
                             error={Boolean(getFieldError('password'))}
                         />
+                    </Grid>
+                    <Grid size={{xs: 12}}>
+                        <Button
+                            fullWidth
+                            variant="outlined"
+                            onClick={() => inputRef.current?.click()}
+                            sx={{ mb: 2 }}
+                        >
+                            {form.avatar ? 'Change Avatar' : 'Upload Avatar'}
+                        </Button>
+                        <input
+                            type="file"
+                            ref={inputRef}
+                            onChange={onFileChange}
+                            accept="image/*"
+                            hidden
+                        />
+                        {form.avatar && (
+                            <Typography variant="body2">
+                                Selected: {form.avatar.name}
+                            </Typography>
+                        )}
                     </Grid>
                 </Grid>
                 <Button
