@@ -2,6 +2,7 @@ import mongoose, {HydratedDocument, Model} from "mongoose";
 import {UserFields} from "../types";
 import {randomUUID} from "node:crypto";
 import argon2 from "argon2";
+import jwt from "jsonwebtoken";
 
 interface UserMethods {
     checkPassword: (password: string) => Promise<boolean>;
@@ -14,6 +15,10 @@ const ARGON2_OPTIONS = {
     timeCost: 5,
     parallelism: 1,
 };
+
+
+export const JWT_SECRET = process.env.JWT_SECRET || 'default_fallback_secret';
+
 
 type UserModel = Model<UserFields, {}, UserMethods>;
 
@@ -58,7 +63,7 @@ UserSchema.methods.checkPassword = async function (password: string){
 }
 
 UserSchema.methods.generateToken = function (){
-    this.token = randomUUID();
+    this.token = jwt.sign({_id: this._id}, JWT_SECRET, {expiresIn: '30d'});
 }
 
 UserSchema.pre('save', async function (next){

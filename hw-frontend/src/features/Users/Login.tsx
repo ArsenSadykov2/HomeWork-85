@@ -12,6 +12,7 @@ import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {login} from "./usersThunks.ts";
 import {selectLoginError, selectLoginLoading} from "./userSlice.ts";
 import {toast} from "react-toastify";
+import {GoogleLogin} from "@react-oauth/google";
 
 
 const Login = () => {
@@ -62,7 +63,16 @@ const Login = () => {
                 </Alert>
             )}
 
-
+            <Box sx={{pt: 2}}>
+                <GoogleLogin
+                    onSuccess={(credentials) => {
+                        console.log(credentials);
+                    }}
+                    onError={() => {
+                        console.log('Login Failed');
+                    }}
+                />
+            </Box>
             <Box component="form" noValidate onSubmit={onSubmitFormHandler} sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
                     <Grid  size={{xs: 12}}>
