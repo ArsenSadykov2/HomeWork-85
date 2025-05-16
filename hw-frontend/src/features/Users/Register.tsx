@@ -59,15 +59,14 @@ const Register = () => {
         }
 
         try {
-            const formData = new FormData();
-            formData.append('username', form.username);
-            formData.append('password', form.password);
-            formData.append('displayName', form.displayName);
-            if (form.avatar) {
-                formData.append('avatar', form.avatar);
-            }
+            const registerData = {
+                username: form.username,
+                password: form.password,
+                displayName: form.displayName,
+                avatar: form.avatar ? await (form.avatar) : null,
+            };
 
-            await dispatch(register(formData)).unwrap();
+            await dispatch(register(registerData)).unwrap();
             navigate("/");
         } catch (error) {
             console.error(error);

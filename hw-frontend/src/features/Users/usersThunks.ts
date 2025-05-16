@@ -6,6 +6,8 @@ import {isAxiosError} from "axios";
 export interface RegisterandLoginResponse {
     user: User;
     message: string;
+    accessToken: string;
+    refreshToken: string;
 }
 
 export const register = createAsyncThunk<
