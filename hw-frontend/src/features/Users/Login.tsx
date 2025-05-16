@@ -10,7 +10,7 @@ import {Alert, Button, TextField} from "@mui/material";
 import {LoginMutation} from "../../types";
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {googleLogin, login} from "./usersThunks.ts";
-import {selectLoginError, selectLoginLoading} from "./userSlice.ts";
+import {selectLoginError, selectLoginLoading, selectUser} from "./userSlice.ts";
 import {toast} from "react-toastify";
 import {GoogleLogin} from "@react-oauth/google";
 
@@ -20,6 +20,7 @@ const Login = () => {
     const error = useAppSelector(selectLoginError);
     const loginLoading = useAppSelector(selectLoginLoading);
     const navigate = useNavigate();
+    const user = useAppSelector(selectUser);
     const [form, setForm] = useState<LoginMutation>({
         username: '',
         password: '',
@@ -55,12 +56,28 @@ const Login = () => {
                 alignItems: 'center',
             }}
         >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                <LockOpenIcon />
-            </Avatar>
+            {user ? (
+                <Avatar
+                    src={user.avatar}
+                    sx={{
+                        width: 56,
+                        height: 56,
+                        mb: 2,
+                        bgcolor: user.avatar ? 'transparent' : 'secondary.main'
+                    }}
+                >
+                    {user.avatar}
+                </Avatar>
+            ) : (
+                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                    <LockOpenIcon />
+                </Avatar>
+            )}
+
             <Typography component="h1" variant="h5">
-                Sign in
+                {user ? `Welcome, ${user.username}!` : 'Sign in'}
             </Typography>
+
 
             {error && (
                 <Alert severity="error">

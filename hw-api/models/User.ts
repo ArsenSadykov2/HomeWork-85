@@ -66,12 +66,9 @@ const UserSchema = new mongoose.Schema<
     displayName: {
         type: String,
         required: true,
-        minlength: 2,
     },
     googleID: {
         type: String,
-        unique: true,
-        sparse: true,
     },
     avatar: {
         type: String,

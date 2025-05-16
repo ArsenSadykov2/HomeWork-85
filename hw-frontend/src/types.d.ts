@@ -39,7 +39,8 @@ export interface User {
     token: string;
     role: string;
     displayName: string;
-    googleID?: string;
+    googleID: string;
+    avatar: string;
 }
 
 export interface ValidationError {
