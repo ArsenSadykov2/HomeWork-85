@@ -1,9 +1,16 @@
 import express from "express";
 import {Error} from 'mongoose';
-import User from "../models/User";
+import User, {createAccessToken, createRefreshToken, JWT_SECRET_REFRESH_TOKEN} from "../models/User";
 import auth, {RequestWithUser} from "../middleware/auth";
+import jwt from "jsonwebtoken";
 
 const usersRouter = express.Router();
+
+interface TokenPayload {
+    _id: string;
+    iat: number;
+    exp: number;
+}
 
 usersRouter.post('/', async (req, res, next) => {
     try {
@@ -12,9 +19,14 @@ usersRouter.post('/', async (req, res, next) => {
             password: req.body.password,
         });
 
+        const accessToken = createAccessToken(String(user._id));
+        const refreshToken = createRefreshToken(String(user._id));
+
+        user.token = refreshToken;
+
         user.generateToken();
         await user.save();
-        res.send({user, message: 'User registered successfully.'});
+        res.send({user, message: 'User registered successfully.', accessToken, refreshToken});
     } catch (error) {
         if (error instanceof Error.ValidationError) {
             res.status(400).send(error);
@@ -45,10 +57,13 @@ usersRouter.post('/sessions', async (req, res, next) => {
         return;
     }
 
-    user.generateToken();
+    const accessToken = createAccessToken(String(user._id));
+    const refreshToken = createRefreshToken(String(user._id));
+
+    user.token = refreshToken;
     await user.save();
 
-    res.send({message: 'Username and password is correct', user});
+    res.send({message: 'Username and password is correct', user, accessToken, refreshToken});
 });
 
 usersRouter.delete('/sessions', async (req, res, next) => {
@@ -63,13 +78,39 @@ usersRouter.delete('/sessions', async (req, res, next) => {
         const user = await User.findOne({token});
 
         if (user) {
-            user.generateToken();
+            const refreshToken = createRefreshToken(String(user._id));
+
+            user.token = refreshToken;
             await user.save();
         }
 
         res.send({message: 'Success logout'});
     } catch (e) {
         next(e);
+    }
+});
+
+usersRouter.post('/refresh-token', async (req, res, next) => {
+    const {refreshToken} = req.body;
+
+    if(!refreshToken) {
+        res.status(401).send({error: 'Refresh token is required'});
+        return;
+    }
+
+    try {
+        const decoded = jwt.verify(refreshToken, JWT_SECRET_REFRESH_TOKEN) as TokenPayload;
+        const user = await User.findOne({_id: decoded._id, token: refreshToken});
+
+        if(!user) {
+            res.status(401).send({error: 'Refresh token is invalid'});
+            return;
+        }
+
+        const  accessToken = createAccessToken(String(user._id));
+        res.send({message: 'Refresh token is valid', user, accessToken});
+    }catch (e) {
+        res.status(401).send({error: 'Refresh token is expired. Please log in'});
     }
 });
 

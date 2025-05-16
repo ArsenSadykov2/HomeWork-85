@@ -15,16 +15,16 @@ const auth = async (
     try{
         const req = expressReq as RequestWithUser;
 
-        const jwtToken = req.get('Authorization')?.replace('Bearer ', '');
+        const accessToken = req.get('Authorization')?.replace('Bearer ', '');
 
-        if (!jwtToken) {
+        if (!accessToken) {
             res.status(401).send({error: 'No token provided.'});
             return;
         }
 
-        const decoded = jwt.verify(jwtToken, JWT_SECRET) as { _id: string };
+        const decoded = jwt.verify(accessToken, JWT_SECRET) as { _id: string };
 
-        const user = await User.findOne({_id: decoded._id, token: jwtToken});
+        const user = await User.findOne({_id: decoded._id});
 
         if (!user) {
             res.status(401).send({error: 'User nor found or wrong token'});
