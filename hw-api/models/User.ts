@@ -20,7 +20,7 @@ export const JWT_SECRET = process.env.JWT_SECRET || 'default_fallback_secret';
 export const JWT_SECRET_REFRESH_TOKEN = process.env.JWT_SECRET_REFRESH_TOKEN || 'default_fallback_refresh_secret_refresh_token';
 
 export const createAccessToken = (user_id: string) => {
-   return jwt.sign({_id: user_id}, JWT_SECRET, {expiresIn: '30s'});
+   return jwt.sign({_id: user_id}, JWT_SECRET, {expiresIn: '365d'});
 }
 
 export const createRefreshToken = (user_id: string) => {
@@ -62,6 +62,20 @@ const UserSchema = new mongoose.Schema<
     token: {
         type: String,
         required: true,
+    },
+    displayName: {
+        type: String,
+        required: true,
+        minlength: 2,
+    },
+    googleID: {
+        type: String,
+        unique: true,
+        sparse: true,
+    },
+    avatar: {
+        type: String,
+        default: '',
     },
 });
 

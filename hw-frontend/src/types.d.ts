@@ -38,6 +38,8 @@ export interface User {
     username: string;
     token: string;
     role: string;
+    displayName: string;
+    googleID?: string;
 }
 
 export interface ValidationError {

@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import {Alert, Button, TextField} from "@mui/material";
 import {LoginMutation} from "../../types";
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
-import {login} from "./usersThunks.ts";
+import {googleLogin, login} from "./usersThunks.ts";
 import {selectLoginError, selectLoginLoading} from "./userSlice.ts";
 import {toast} from "react-toastify";
 import {GoogleLogin} from "@react-oauth/google";
@@ -41,6 +41,11 @@ const Login = () => {
         }
     };
 
+    const googleLoginHandler = async (credential: string) => {
+        await dispatch(googleLogin(credential)).unwrap();
+        navigate("/");
+    };
+
     return (
         <Box
             sx={{
@@ -65,8 +70,10 @@ const Login = () => {
 
             <Box sx={{pt: 2}}>
                 <GoogleLogin
-                    onSuccess={(credentials) => {
-                        console.log(credentials);
+                    onSuccess={(credentialResponse) => {
+                        if(credentialResponse.credential) {
+                            void googleLoginHandler(credentialResponse.credential);
+                        }
                     }}
                     onError={() => {
                         console.log('Login Failed');

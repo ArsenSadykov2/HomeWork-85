@@ -3,8 +3,84 @@ import {Error} from 'mongoose';
 import User, {createAccessToken, createRefreshToken, JWT_SECRET_REFRESH_TOKEN} from "../models/User";
 import auth, {RequestWithUser} from "../middleware/auth";
 import jwt from "jsonwebtoken";
+import { OAuth2Client } from "google-auth-library";
+import config from "../config";
 
 const usersRouter = express.Router();
+const client = new OAuth2Client(config.google.clientId);
+
+usersRouter.post('/google', async (req, res, next) => {
+    try {
+
+        if (!req.body.credential) {
+            res.status(400).send({error: 'Google login Error!'});
+            return;
+        }
+
+        const ticket = await client.verifyIdToken({
+            idToken: req.body.credential,
+            audience: config.google.clientId,
+        });
+
+        const payload = ticket.getPayload();
+
+        if (!payload) {
+            res.status(400).send({error: 'Google login Error!'});
+            return;
+        }
+
+        const email = payload['email'];
+        const googleID = payload['sub'];
+        const displayName = payload['name'];
+        const avatar = payload['picture'];
+
+        if (!email){
+            res.status(400).send({error: 'No enough user data to continue!'});
+            return;
+        }
+
+        let user = await User.findOne({googleID: googleID});
+
+
+        const genPassword = crypto.randomUUID();
+
+        if (!user) {
+            user = new User({
+                username: email,
+                password: genPassword,
+                confirmPassword: genPassword,
+                displayName,
+                googleID,
+                avatar: avatar || '',
+            });
+        }
+
+        const accessToken = createAccessToken(String(user._id));
+        const refreshToken = createRefreshToken(String(user._id));
+
+        user.token = refreshToken;
+        await user.save();
+
+
+        res.cookie('token', user.token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== 'production',
+            sameSite: 'strict',
+        });
+
+        const safeUser = {
+            _id: user._id,
+            username: user.username,
+            role: user.role,
+            displayName: user.displayName,
+        };
+
+        res.send({user: safeUser, message: 'Login with Google successfully.'});
+    } catch (e){
+        next(e);
+    }
+});
+
 
 interface TokenPayload {
     _id: string;

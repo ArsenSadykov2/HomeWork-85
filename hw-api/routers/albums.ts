@@ -1,14 +1,10 @@
 import express from "express";
-import {Error} from "mongoose";
-import {imagesUpload} from "../multer";
 import Album from "../models/Album";
-import Artist from "../models/Artist";
-import auth from "../middleware/auth";
 
 
 const albumRouter = express.Router();
 
-albumRouter.get('/', auth, async (req, res, next) => {
+albumRouter.get('/', async (req, res, next) => {
     try{
         const album = await Album.find();
         res.send(album);

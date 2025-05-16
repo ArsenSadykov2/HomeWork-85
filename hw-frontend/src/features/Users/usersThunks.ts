@@ -48,6 +48,26 @@ export const login = createAsyncThunk<
     }
 )
 
+export const googleLogin = createAsyncThunk<
+    User,
+    {},
+    { rejectValue: GlobalError}
+>(
+    'users/googleLogin',
+    async (credential, {rejectWithValue}) => {
+        try{
+            const response = await axiosApi.post<RegisterandLoginResponse>('/users/google', {credential});
+            return response.data.user;
+        }catch (error){
+            if (isAxiosError(error) && error.response && error.response.status === 400) {
+                return rejectWithValue(error.response.data as GlobalError);
+            }
+
+            throw error;
+        }
+    }
+);
+
 export const logout = createAsyncThunk<
     void,
     void
