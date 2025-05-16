@@ -31,7 +31,7 @@ const App = () => {
 
                         <Route element={<ProtectedRoute isAllowed={user && user.role === 'admin'}/>}>
                             <Route path="/albums/new" element={<NewAlbum/>}/>
-                            <Route path="/albums/:id" element={<FullAlbum/>}/>
+                            <Route path="/albums/:i d" element={<FullAlbum/>}/>
                         </Route>
 
                         <Route path="/trackHistories" element={<TrackHistoryList/>}/>
